@@ -64,11 +64,11 @@ namespace Stateless
                     .ToList();
             }
 
-            internal TransitionGuard(Func<bool> guard, string description = null)
+            internal TransitionGuard(Func<bool> guard, string description = null, int priority = 0)
             {
                 Conditions = new List<GuardCondition>
                 {
-                    new GuardCondition(guard, Reflection.InvocationInfo.Create(guard, description))
+                    new GuardCondition(guard, Reflection.InvocationInfo.Create(guard, description), priority)
                 };
             }
 

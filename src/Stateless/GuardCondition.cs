@@ -15,12 +15,13 @@ namespace Stateless
             /// </summary>
             /// <param name="guard">No Argument Guard Condition</param>
             /// <param name="description"></param>
-            internal GuardCondition(Func<bool> guard, Reflection.InvocationInfo description)
-                : this(args => guard(), description)
+            /// <param name="priority"></param>
+            internal GuardCondition(Func<bool> guard, Reflection.InvocationInfo description, int priority = 0)
+                : this(args => guard(), description, priority)
             {
             }
 
-            internal GuardCondition(Func<object[], bool> guard, Reflection.InvocationInfo description)
+            internal GuardCondition(Func<object[], bool> guard, Reflection.InvocationInfo description, int priority = 0)
             {
                 Guard = guard ?? throw new ArgumentNullException(nameof(guard));
                 _methodDescription = description ?? throw new ArgumentNullException(nameof(description));

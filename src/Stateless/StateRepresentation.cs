@@ -87,9 +87,24 @@ namespace Stateless
                 var actual = results
                     .Where(r => !r.UnmetGuardConditions.Any())
                     .ToList();
+                
+                // Find highest priority among actual
+                int lowestPriority = int.MinValue;
+                foreach (var triggerBehaviour in actual)
+                {
+                    lowestPriority = Math.Max(lowestPriority, triggerBehaviour.Priority);
+                }
+                
+                // Only allow one trigger to exist with lowest priority
+                var actualPriority = new List<TriggerBehaviourResult>();
+                foreach (var triggerBehaviour in actual)
+                {
+                    if (triggerBehaviour.Priority == lowestPriority) actualPriority.Add(triggerBehaviour);
+                }
+                
+                if (actualPriority.Count <= 1)
+                    return actualPriority.FirstOrDefault();
 
-                if (actual.Count <= 1)
-                    return actual.FirstOrDefault();
 
                 var message = string.Format(StateRepresentationResources.MultipleTransitionsPermitted, trigger, _state);
                 throw new InvalidOperationException(message);
